@@ -108,6 +108,8 @@ class Sentence():
         # The only way to know for sure that a cell is a mine, is if the lenght of the sentence is the same as the count
         if len(self.cells) == self.count:
             return self.cells
+        else:
+            return set()
 
     def known_safes(self):
         """
@@ -115,16 +117,8 @@ class Sentence():
         """
         if self.count == 0:
             return self.cells
-    
-    #def is_mine(self,cell):
-        """
-        return True if the cell is a known mine, Flase otherwise
-        """
-
-    #def is_safe(self,cell):
-        """
-        return True if the cell is known to be safe, Flase otherwise
-        """
+        else:
+            return set()
 
     def mark_mine(self, cell):
         """
@@ -214,8 +208,8 @@ class MinesweeperAI():
         # 3)add new sentence to the AI KB
         # 3.1) Lets first create the set of all the cell's neighbors
         neighbors = set()
-        for i in range(cell[0] - 1, cell[0] + 1):
-            for j in range(cell[1] - 1, cell[1] + 1):
+        for i in range(cell[0] - 1, cell[0] + 2):
+            for j in range(cell[1] - 1, cell[1] + 2):
                 # We don't want to add the cell itself
                 if (i, j) ==cell:
                     continue
@@ -227,6 +221,7 @@ class MinesweeperAI():
                     #If the cell is known to be a mine, we decrease the count and do not add it to the set
                     if ((i,j) in self.mines):
                         count -= 1
+                        continue
 
                     #If the cell is not marked as safe, we add it to the set
                     if not((i,j) in self.safes):
