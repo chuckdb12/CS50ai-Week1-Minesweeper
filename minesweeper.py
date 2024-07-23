@@ -267,6 +267,23 @@ class MinesweeperAI():
                     # Add the new sentence to the KB if not already there
                     if infferedSentence not in self.knowledge:
                         self.knowledge.append(infferedSentence)
+
+        # Repeate step 4 to see if we can inffer new mines based on the new sentence(s)
+        for sentence in self.knowledge:
+            # Creation of a set which will contain only mines if created
+            mines = sentence.known_mines()
+            # Same principle for safe cells
+            safes = sentence.known_safes()
+            if mines:
+                #Iterating on a copy of the set to avoid potential errors
+                for cell in mines.copy():
+                    self.mark_mine(cell)
+            elif safes:
+                for cell in safes.copy():
+                    self.mark_safe(cell)
+
+
+        self.knowledge = [sentence for sentence in self.knowledge if sentence != Sentence(set(), 0)]
                 
     def make_safe_move(self):
         """
@@ -303,16 +320,5 @@ class MinesweeperAI():
         if len(eventualMoves) == 0:
             return None
         else:
+            #If the set is not empty, we return a random element of it
             return eventualMoves.pop()
-
-
-"""
-        while True:
-            i = random.randint(0, self.width - 1)
-            j = random.randint(0, self.height - 1)
-            if (i, j) not in self.moves_made:
-                if (i, j) not in self.mines:
-                    #If (i, j) is has not been played yet and is not known to be a mine, we return it
-                    return (i, j)
-        
-"""
