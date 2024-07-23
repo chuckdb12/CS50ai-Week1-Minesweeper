@@ -250,9 +250,6 @@ class MinesweeperAI():
         # We now need to delete any sentence that would be empty
         # To do so, list comprehension will be used : https://www.w3schools.com/python/python_lists_comprehension.asp
 
-        #Creation of an empty sentence to be compared
-        #emptySentence = Sentence(set(), 0)
-
         self.knowledge = [sentence for sentence in self.knowledge if sentence != Sentence(set(), 0)]
 
         # 5.1 Lets check if the new sentence is a subset of any existing sentences in the KB
